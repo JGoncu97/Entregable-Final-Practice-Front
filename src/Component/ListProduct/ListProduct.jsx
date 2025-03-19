@@ -3,15 +3,13 @@ import { EditProductForm } from "../EditForm/EditProductForm";
 import { ProductContext } from "../../Context/ListProvider";
 import { FilterList } from "../Filter/FilterList";
 
-
 export const ListProduct = ({ products }) => {
     const [editingProduct, setEditingProduct] = useState(null);
-    const { dateProduct } = useContext(ProductContext);
+    const { updateProductBD } = useContext(ProductContext);
     const [searchName, setSearchName] = useState("");
     const [searchTradeMark, setSearchTradeMark] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
     const [category, setCategory] = useState("");
-
 
     const formatQuantity = (quantity, unit) => {
         if (unit === "kg" || unit === "g") {
@@ -22,7 +20,6 @@ export const ListProduct = ({ products }) => {
         return `${quantity} ${unit}`;
     };
 
- 
     const filteredProducts = products.filter((product) => {
         return (
             product.name.toLowerCase().includes(searchName.toLowerCase()) &&
@@ -34,7 +31,6 @@ export const ListProduct = ({ products }) => {
 
     return (
         <div className="w-full max-w-4xl mx-auto sm:p-4">
-        
             <FilterList 
                 searchName={searchName} setSearchName={setSearchName}
                 searchTradeMark={searchTradeMark} setSearchTradeMark={setSearchTradeMark}
@@ -42,7 +38,16 @@ export const ListProduct = ({ products }) => {
                 category={category} setCategory={setCategory}
             />
             <div className="flex">
-                {editingProduct && <EditProductForm product={editingProduct} onClose={() => setEditingProduct(null)} />}
+                {editingProduct && (
+                    <EditProductForm 
+                        product={editingProduct} 
+                        onClose={() => setEditingProduct(null)} 
+                        onSave={(updatedProduct) => {
+                            updateProductBD(updatedProduct);
+                            setEditingProduct(null);
+                        }} 
+                    />
+                )}
                 <table className="w-full bg-white border border-gray-300 rounded-lg shadow-md">
                     <thead className="bg-gray-200">
                         <tr>
@@ -55,33 +60,24 @@ export const ListProduct = ({ products }) => {
                             <th className="py-2 px-4 border-b text-left"></th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        {filteredProducts.length > 0 ? (
-                            filteredProducts.map((product, index) => (
-                                <tr key={product.id || index} className="hover:bg-gray-100">
-                                    <td className="py-2 px-4 border-b">{product.name}</td>
-                                    <td className="py-2 px-4 border-b">{product.tradeMark}</td>
-                                    <td className="py-2 px-4 border-b border-black font-bold text-green-600">
-                                        ${product.price.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </td>
-                                    <td className="py-2 px-4 border-b">{formatQuantity(product.quantity, product.unit)}</td>
-                                    <td className="py-2 px-4 border-b">{product.category}</td>
-                                    <td className="py-2 px-4 border-b">{product.date}</td>
-                                    <td className="py-2 px-4 border-b">
-                                        <button className="bg-yellow-500 text-white px-2 py-1 rounded" onClick={() => setEditingProduct(product)}>
-                                            Editar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="7" className="py-4 text-center text-gray-500">
-                                    No hay productos que coincidan con los filtros.
+                        {filteredProducts.map((product) => (
+                            <tr key={product.id} className="hover:bg-gray-100">
+                                <td className="py-2 px-4 border-b">{product.name}</td>
+                                <td className="py-2 px-4 border-b">{product.tradeMark}</td>
+                                <td className="py-2 px-4 border-b font-bold text-green-600">
+                                    ${product.price.toFixed(2)}
+                                </td>
+                                <td className="py-2 px-4 border-b">{formatQuantity(product.quantity, product.unit)}</td>
+                                <td className="py-2 px-4 border-b">{product.category}</td>
+                                <td className="py-2 px-4 border-b">{product.date}</td>
+                                <td className="py-2 px-4 border-b">
+                                    <button className="bg-yellow-500 text-white px-2 py-1 rounded" onClick={() => setEditingProduct(product)}>
+                                        Editar
+                                    </button>
                                 </td>
                             </tr>
-                        )}
+                        ))}
                     </tbody>
                 </table>
             </div>

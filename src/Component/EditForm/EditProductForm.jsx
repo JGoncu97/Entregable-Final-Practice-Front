@@ -4,7 +4,7 @@ import { ProductContext } from '../../Context/ListProvider';
 
 
 export const EditProductForm = ({ product, onClose }) => {
-    const { updateProduct } = useContext(ProductContext);
+    const { updateProductBD } = useContext(ProductContext);
     const [editedProduct, setEditedProduct] = useState({ ...product });
 
     const handleChange = (e) => {
@@ -17,9 +17,10 @@ export const EditProductForm = ({ product, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateProduct(editedProduct);
+        updateProductBD(editedProduct);
         onClose();
     };
+    
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

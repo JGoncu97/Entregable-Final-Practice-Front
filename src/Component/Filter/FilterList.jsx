@@ -6,28 +6,28 @@ export const FilterList = ({ searchName, setSearchName, searchTradeMark, setSear
             <input
                 type="text"
                 placeholder="Buscar por nombre..."
-                className="p-2 border rounded"
+                className="p-2 border rounded bg-white"
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
             />
             <input
                 type="text"
                 placeholder="Buscar por marca..."
-                className="p-2 border rounded"
+                className="p-2 border rounded bg-white"
                 value={searchTradeMark}
                 onChange={(e) => setSearchTradeMark(e.target.value)}
             />
             <input
                 type="number"
                 placeholder="Precio máximo..."
-                className="p-2 border rounded"
+                className="p-2 border rounded bg-white"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
             />
             <input
                 type="text"
                 placeholder="Categoría..."
-                className="p-2 border rounded"
+                className="p-2 border rounded bg-white"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
             />

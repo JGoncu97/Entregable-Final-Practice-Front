@@ -7,7 +7,7 @@ import { Header } from '../../Layout/Header/Header';
 
 export const HistoryProduct = () => {
 
-    const { listProduct, totalPrice } = useContext(ProductContext); 
+    const { listProduct} = useContext(ProductContext); 
 
   return (
     <div className='bg-gray-700 flex flex-col items-center justify-start min-h-screen w-screen p-0 sm:p-0 space-y-8 h-auto '>
@@ -15,8 +15,6 @@ export const HistoryProduct = () => {
         <section className=" flex flex-col items-center justify-center bg-gray-200  rounded-lg shadow-md p-4  space-y-14 w-full  mb-32">
             <h2 className="text-xl font-semibold text-gray-800">Lista de productos</h2>
             <ListProduct products={listProduct} />
-
-            <h3 className="text-xl font-semibold text-gray-800 text-right mt-6">Precio Total: ${totalPrice.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
         </section>
         <Footer />
     </div>
