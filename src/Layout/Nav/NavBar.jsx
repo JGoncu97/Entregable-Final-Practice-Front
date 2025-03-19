@@ -22,6 +22,10 @@ export const NavBar = () => {
     navigate('/Comparative')
   }
 
+  const handleResume = () =>{
+    navigate('/Resume')
+  }
+
   
   const handleLogout = async () => {
     try {
@@ -65,6 +69,7 @@ export const NavBar = () => {
           <li onClick={handleFormMarket} className="text-lg hover:text-gray-400 transition-colors cursor-pointer">Agregar Productos</li>
           <li onClick={handleListProduct} className="text-lg hover:text-gray-400 transition-colors cursor-pointer">Lista de Productos</li>
           <li onClick={handleGraphics} className="text-lg hover:text-gray-400 transition-colors cursor-pointer">Graficas</li>
+          <li onClick={handleResume} className="text-lg hover:text-gray-400 transition-colors cursor-pointer">Resume</li>
         </ul>
         <button onClick={handleLogout} className='bg-red-700 w-[8rem] h-8 rounded-[1rem] font-semibold hover:bg-red-500 '>Cerrar Sesion</button>
       </div>
