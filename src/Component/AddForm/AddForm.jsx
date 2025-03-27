@@ -45,7 +45,8 @@ export const AddForm = () => {
             unit: unit, 
             store: shop,
             tradeMark: mark,
-            date:dateProduct
+            date:dateProduct,
+            state:true
         };
         
 

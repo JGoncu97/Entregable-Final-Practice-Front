@@ -22,12 +22,24 @@ export const ListProduct = ({ products }) => {
 
     const filteredProducts = products.filter((product) => {
         return (
+            product.state !== false &&
             product.name.toLowerCase().includes(searchName.toLowerCase()) &&
             product.tradeMark.toLowerCase().includes(searchTradeMark.toLowerCase()) &&
             (maxPrice === "" || product.price <= parseFloat(maxPrice)) &&
             (category === "" || product.category.toLowerCase() === category.toLowerCase())
         );
     });
+
+    const handleDeleteProduct = (product) => {
+        // Crear un nuevo producto con el estado cambiado a false
+        const updatedProduct = {
+            ...product,
+            state: false  // Cambiar el estado a false
+        };
+
+        // Llamar a la función de actualización del contexto
+        updateProductBD(updatedProduct);
+    };
 
     return (
         <div className="w-full max-w-4xl mx-auto sm:p-4">
@@ -72,8 +84,11 @@ export const ListProduct = ({ products }) => {
                                 <td className="py-2 px-4 border-b">{product.category}</td>
                                 <td className="py-2 px-4 border-b">{product.date}</td>
                                 <td className="py-2 px-4 border-b">
-                                    <button className="bg-yellow-500 text-white px-2 py-1 rounded" onClick={() => setEditingProduct(product)}>
+                                    <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-4" onClick={() => setEditingProduct(product)}>
                                         Editar
+                                    </button>
+                                    <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => handleDeleteProduct(product)} >
+                                        Eliminar
                                     </button>
                                 </td>
                             </tr>

@@ -102,6 +102,7 @@ export const ListProvider = ({ children }) => {
                 unit: updatedProduct.unit,
                 category: updatedProduct.category,
                 date: updatedProduct.date,
+                state:updatedProduct.state
             });
 
             await fetchProducts(); 
