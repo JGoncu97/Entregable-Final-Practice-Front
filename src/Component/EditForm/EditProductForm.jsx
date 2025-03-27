@@ -25,14 +25,16 @@ export const EditProductForm = ({ product, onClose }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-4">Editar Producto</h2>
+                <h2 className="text-xl font-semibold mb-4 ml-8">Editar Producto</h2>
                 <form onSubmit={handleSubmit}>
-                    <label >Producto</label>
+                    <label className='font-semibold'>Producto</label>
                         <input type="text" name="name" value={editedProduct.name} onChange={handleChange} className="block w-full p-2 border mb-2" />
-                    <label ></label>
-                    <input type="text" name="tradeMark" value={editedProduct.tradeMark} onChange={handleChange} className="block w-full p-2 border mb-2" />
-                    <input type="number" name="price" value={editedProduct.price} onChange={handleChange} className="block w-full p-2 border mb-2" />
-                    <input type="text" name="quantity" value={editedProduct.quantity} onChange={handleChange} className="block w-full p-2 border mb-2" />
+                    <label className='font-semibold' > Marca</label>
+                        <input type="text" name="tradeMark" value={editedProduct.tradeMark} onChange={handleChange} className="block w-full p-2 border mb-2" />
+                    <label className='font-semibold'>Precio</label>
+                        <input type="number" name="price" value={editedProduct.price} onChange={handleChange} className="block w-full p-2 border mb-2" />
+                    <label className='font-semibold'>Cantidad</label>
+                        <input type="text" name="quantity" value={editedProduct.quantity} onChange={handleChange} className="block w-full p-2 border mb-2" />
                     <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
                     <button type="button" onClick={onClose} className="ml-2 bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
                 </form>
