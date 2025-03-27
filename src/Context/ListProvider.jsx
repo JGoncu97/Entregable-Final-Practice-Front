@@ -58,6 +58,28 @@ export const ListProvider = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+        const fetchCategories = async () => { 
+            try {
+                const querySnapshot = await getDocs(collection(db, "Categories"));
+                const categoriesList = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    name: doc.data().name, 
+                }));
+                setCategories(categoriesList);
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "No se pudo obtener las categorias. Intenta de nuevo.",
+                    confirmButtonColor: "#d33",
+                });
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     const updateProductBD = async (updatedProduct) => {
         if (!updatedProduct.id) {
             Swal.fire({

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import Chart from "react-apexcharts";
 import { ProductContext } from "../../Context/ListProvider";
 
@@ -14,76 +14,94 @@ export const GraphicsInv = () => {
         "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
     ];
 
-    // Agrupar productos por año y por mes
-    const groupedData = {};
+    // Procesamiento de productos usando ID como identificador único
+    const processedProducts = useMemo(() => {
+        const groupedByYear = {};
 
-    listProduct.forEach((product) => {
-        if (!product.date) return;
+        listProduct.forEach((product) => {
+            if (!product.date) return;
 
-        const [day, month, year] = product.date.split("/").map(Number);
-        if (!day || !month || !year) return;
+            const [day, month, year] = product.date.split("/").map(Number);
+            if (!day || !month || !year) return;
 
-        const monthName = new Date(year, month - 1).toLocaleString("default", { month: "long" }).toLowerCase();
+            const monthName = new Date(year, month - 1).toLocaleString("default", { month: "long" }).toLowerCase();
 
-        if (!groupedData[year]) {
-            groupedData[year] = monthOrder.reduce((acc, m) => {
-                acc[m] = [];
-                return acc;
-            }, {});
-        }
+            if (!groupedByYear[year]) {
+                groupedByYear[year] = monthOrder.reduce((acc, m) => {
+                    acc[m] = [];
+                    return acc;
+                }, {});
+            }
 
-        groupedData[year][monthName].push({
-            name: product.name,
-            price: product.price,
-            date: product.date,
-            storeName: product.store
+            // Usar el ID como identificador único
+            groupedByYear[year][monthName].push({
+                ...product,
+                uniqueId: product.id  // Usar ID como identificador
+            });
         });
-    });
+
+        return groupedByYear;
+    }, [listProduct]);
 
     return (
         <div className="w-full bg-white p-4 shadow-lg rounded-lg">
-            <h2 className="text-center text-lg font-semibold mb-2">Comparación de Precios por Año</h2>
-            <p className="text-center text-gray-600">Productos comprados organizados por mes</p>
+            <h2 className="text-center text-lg font-semibold mb-2">Comparación de Precios Detallados</h2>
+            <p className="text-center text-gray-600">Productos individuales por fecha</p>
 
-            {Object.entries(groupedData).map(([year, data]) => {
-                const series = [...new Set(listProduct.map(p => p.name))].map(productName => ({
-                    name: productName,
-                    data: monthOrder.map(month => {
-                        const product = data[month].find(p => p.name === productName);
-                        return product ? product.price : 0;
-                    })
-                }));
+            {Object.entries(processedProducts).map(([year, data]) => {
+                // Generar series usando el ID como identificador
+                const series = monthOrder.flatMap(month => 
+                    data[month].map(product => ({
+                        name: `${product.name} (${product.date}) `,
+                        data: monthOrder.map((m, index) => 
+                            m === month ? product.price : 0
+                        ),
+                        id: product.id,
+                        store: product.store  // Añadir store a la serie
+                    }))
+                );
 
                 return (
                     <div key={year} className="mb-8">
                         <h3 className="text-center text-xl font-semibold mb-4">{year}</h3>
                         <Chart 
                             options={{
-                                chart: { type: "bar", height: 380 },
-                                plotOptions: { bar: { columnWidth: "80%" } },
-                                xaxis: { categories: monthOrder.map(m => m.charAt(0).toUpperCase() + m.slice(1)) },
+                                chart: { 
+                                    type: "bar", 
+                                    height: 500,
+                                    stacked: false
+                                },
+                                plotOptions: { 
+                                    bar: { 
+                                        columnWidth: "95%",
+                                        distributed: false
+                                    } 
+                                },
+                                xaxis: { 
+                                    categories: monthOrder.map(m => m.charAt(0).toUpperCase() + m.slice(1)) 
+                                },
                                 tooltip: {
                                     y: {
-                                        formatter: (val, { seriesIndex, dataPointIndex }) => {
-                                            if (val === 0) return "";
-                                            const month = monthOrder[dataPointIndex];
-                                            const product = series[seriesIndex].name;
-                                            const productData = data[month].find(p => p.name === product);
+                                        formatter: (val, { seriesIndex }) => {
+                                            const productInfo = series[seriesIndex];
+                                           productInfo.name.match(/\(([^)]+)\)/);
+                                            
                                             return `
-                                                
+                                                <strong>Producto:</strong> ${productInfo.name.split(' (')[0]} <br>
                                                 <strong>Precio:</strong> $${val.toLocaleString("es-ES", { minimumFractionDigits: 2 })} <br>
-                                                <strong>Fecha:</strong> ${productData?.date || "Sin fecha"} <br>
-                                                <strong>Tienda:</strong> ${productData?.storeName || "Desconocida"}
+                                                <strong>Tienda:</strong> ${productInfo.store || "Desconocida"} <br>
                                             `;
                                         }
                                     }
                                 },
-                                dataLabels: { enabled: false }
-                                
+                                dataLabels: { enabled: false },
+                                legend: { 
+                                    show: false  // Ocultar completamente la leyenda
+                                }
                             }}
                             series={series}
                             type="bar"
-                            height={350}
+                            height={600}
                         />
                     </div>
                 );
