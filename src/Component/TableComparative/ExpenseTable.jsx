@@ -39,27 +39,29 @@ export const ExpenseTable = () => {
     });
 
     return (
-        <div className="w-[60rem] bg-white p-4 shadow-lg rounded-lg m-4">
-            <h2 className="text-center text-lg font-semibold mb-2">Resumen de Gastos por Mes</h2>
+        <div className="w-full max-w-4xl bg-white p-4 sm:p-6 md:p-8 shadow-lg rounded-lg m-29">
+            <h2 className="text-center text-lg sm:text-xl font-semibold mb-2">Resumen de Gastos por Mes</h2>
 
-            <table className="table w-full border border-gray-300">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="border border-gray-300 px-4 py-2">Mes</th>
-                        <th className="border border-gray-300 px-4 py-2">Gasto Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedMonths.map((month) => (
-                        <tr key={month} className="text-center">
-                            <td className="border border-gray-300 px-4 py-2">{month}</td>
-                            <td className="border border-gray-300 px-4 py-2">
-                                ${expensesByMonth[month].toLocaleString("es-ES")}
-                            </td>
+            <div className="overflow-x-auto">
+                <table className="table w-full border border-gray-300 text-sm sm:text-base">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="border border-gray-300 px-4 py-2">Mes</th>
+                            <th className="border border-gray-300 px-4 py-2">Gasto Total</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {sortedMonths.map((month) => (
+                            <tr key={month} className="text-center hover:bg-gray-100">
+                                <td className="border border-gray-300 px-4 py-2">{month}</td>
+                                <td className="border border-gray-300 px-4 py-2 font-bold text-green-600">
+                                    ${expensesByMonth[month].toLocaleString("es-ES")}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                </div>
         </div>
     );
 };

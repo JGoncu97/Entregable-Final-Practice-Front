@@ -44,68 +44,68 @@ export const GraphicsInv = () => {
     }, [listProduct]);
 
     return (
-        <div className="w-full bg-white p-4 shadow-lg rounded-lg">
-            <h2 className="text-center text-lg font-semibold mb-2">Comparación de Precios Detallados</h2>
-            <p className="text-center text-gray-600">Productos individuales por fecha</p>
+      <div className="w-full bg-white mb-23 mt-18 p-4 sm:p-6 md:p-8 shadow-lg rounded-lg">
+    <h2 className="text-center text-base sm:text-lg font-semibold mb-2">
+        Comparación de Precios Detallados
+    </h2>
+    <p className="text-center text-gray-600 text-xs sm:text-sm">
+        Productos individuales por fecha
+    </p>
 
-            {Object.entries(processedProducts).map(([year, data]) => {
-                // Generar series usando el ID como identificador
-                const series = monthOrder.flatMap(month => 
-                    data[month].map(product => ({
-                        name: `${product.name} (${product.date}) `,
-                        data: monthOrder.map((m, index) => 
-                            m === month ? product.price : 0
-                        ),
-                        id: product.id,
-                        store: product.store  // Añadir store a la serie
-                    }))
-                );
+    {Object.entries(processedProducts).map(([year, data]) => {
+        const series = monthOrder.flatMap(month =>
+            data[month].map(product => ({
+                name: `${product.name} (${product.date})`,
+                data: monthOrder.map(m => (m === month ? product.price : 0)),
+                id: product.id,
+                store: product.store
+            }))
+        );
 
-                return (
-                    <div key={year} className="mb-8">
-                        <h3 className="text-center text-xl font-semibold mb-4">{year}</h3>
-                        <Chart 
-                            options={{
-                                chart: { 
-                                    type: "bar", 
-                                    height: 500,
-                                    stacked: false
-                                },
-                                plotOptions: { 
-                                    bar: { 
-                                        columnWidth: "95%",
-                                        distributed: false
-                                    } 
-                                },
-                                xaxis: { 
-                                    categories: monthOrder.map(m => m.charAt(0).toUpperCase() + m.slice(1)) 
-                                },
-                                tooltip: {
-                                    y: {
-                                        formatter: (val, { seriesIndex }) => {
-                                            const productInfo = series[seriesIndex];
-                                           productInfo.name.match(/\(([^)]+)\)/);
-                                            
-                                            return `
-                                                <strong>Producto:</strong> ${productInfo.name.split(' (')[0]} <br>
-                                                <strong>Precio:</strong> $${val.toLocaleString("es-ES", { minimumFractionDigits: 2 })} <br>
-                                                <strong>Tienda:</strong> ${productInfo.store || "Desconocida"} <br>
-                                            `;
-                                        }
+        return (
+            <div key={year} className="mb-8">
+                <h3 className="text-center text-lg sm:text-xl font-semibold mb-4">{year}</h3>
+                <div className="overflow-x-auto">
+                    <Chart
+                        options={{
+                            chart: { 
+                                type: "bar", 
+                                height: "auto", 
+                                stacked: false
+                            },
+                            plotOptions: { 
+                                bar: { 
+                                    columnWidth: "80%", 
+                                    distributed: false 
+                                } 
+                            },
+                            xaxis: { 
+                                categories: monthOrder.map(m => m.charAt(0).toUpperCase() + m.slice(1)) 
+                            },
+                            tooltip: {
+                                y: {
+                                    formatter: (val, { seriesIndex }) => {
+                                        const productInfo = series[seriesIndex];
+                                        return `
+                                            <strong>Producto:</strong> ${productInfo.name.split(' (')[0]} <br>
+                                            <strong>Precio:</strong> $${val.toLocaleString("es-ES", { minimumFractionDigits: 2 })} <br>
+                                            <strong>Tienda:</strong> ${productInfo.store || "Desconocida"} <br>
+                                        `;
                                     }
-                                },
-                                dataLabels: { enabled: false },
-                                legend: { 
-                                    show: false  // Ocultar completamente la leyenda
                                 }
-                            }}
-                            series={series}
-                            type="bar"
-                            height={600}
-                        />
-                    </div>
-                );
-            })}
-        </div>
+                            },
+                            dataLabels: { enabled: false },
+                            legend: { show: false }
+                        }}
+                        series={series}
+                        type="bar"
+                        height={window.innerWidth < 640 ? 400 : 600} // Responsive height
+                    />
+                </div>
+            </div>
+        );
+    })}
+</div>
+
     );
 };

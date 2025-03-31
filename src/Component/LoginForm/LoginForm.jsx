@@ -86,37 +86,37 @@ export const LoginForm = () => {
     };
 
     return (
-        
-            <form className='flex flex-col gap-4 w-96 p-8 rounded-2xl bg-white text-black shadow-xl'
-                onSubmit={handleSubmit(onSubmit)}>
-                <h2 className='font-bold text-center text-3xl'>Inicio de sesión</h2>
-                
-                <label className='font-bold'>Username</label>
-                <input className='border p-2 rounded-lg' type="text" placeholder="Username" {...register("username", { required: true })} />
-                
-                <label className='font-bold'>Password</label>
-                <input className='border p-2 rounded-lg' type="password" placeholder="Password" {...register("password", { required: true })} />
-
-                <div className='flex justify-around items-center'>
-                    <button type="submit" className='bg-blue-700 hover:bg-blue-500 h-10 w-32 rounded-lg font-bold text-white'>Iniciar Sesión</button>
-                    <button type="button" onClick={() => navigate('/register')} className='h-10 w-32 rounded-lg font-bold border hover:bg-yellow-300'>Registro</button>
-                </div>
-
-                <div className='flex justify-center items-center gap-4 w-full mt-4'>
-                    <span className='border w-full'></span>
-                    <p>o</p>
-                    <span className='border w-full'></span>
-                </div>
-
-                <button onClick={handleGoogleLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-red-600 hover:bg-red-500 h-10'>
-                    <img src={Google} alt="google" className='w-6 h-6' /> Ingrese con Google
-                </button>
-                <button onClick={handleFacebookLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-blue-700 hover:bg-blue-600 h-10 pl-4'>
-                    <img src={Facebook} alt="facebook" className='w-6 h-6' />Ingrese con Facebook
-                </button>
-                <button onClick={handleGithubLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-white hover:bg-gray-300 h-10'>
-                    <img src={GitHub} alt="apple" className='w-6 h-6' /> Ingrese con GitHub
-                </button>
+       
+            <form className='flex flex-col gap-4 w-full max-w-xs sm:max-w-sm md:w-96 p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl bg-white text-black shadow-xl'
+              onSubmit={handleSubmit(onSubmit)}>
+              <h2 className='font-bold text-center text-xl sm:text-2xl md:text-3xl'>Inicio de sesión</h2>
+              
+              <label className='font-bold'>Username</label>
+              <input className='border p-2 rounded-lg' type="text" placeholder="Username" {...register("username", { required: true })} />
+              
+              <label className='font-bold'>Password</label>
+              <input className='border p-2 rounded-lg' type="password" placeholder="Password" {...register("password", { required: true })} />
+          
+              <div className='flex flex-col sm:flex-row justify-around items-center gap-2 sm:gap-4'>
+                <button type="submit" className='bg-blue-700 hover:bg-blue-500 h-10 w-full sm:w-32 rounded-lg font-bold text-white'>Iniciar Sesión</button>
+                <button type="button" onClick={() => navigate('/register')} className='h-10 w-full sm:w-32 rounded-lg font-bold border hover:bg-yellow-300 mt-2 sm:mt-0'>Registro</button>
+              </div>
+          
+              <div className='flex justify-center items-center gap-4 w-full mt-4'>
+                <span className='border w-full'></span>
+                <p>o</p>
+                <span className='border w-full'></span>
+              </div>
+          
+              <button onClick={handleGoogleLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-red-600 hover:bg-red-500 h-10'>
+                <img src={Google} alt="google" className='w-6 h-6' /> Ingrese con Google
+              </button>
+              <button onClick={handleFacebookLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-blue-700 hover:bg-blue-600 h-10 pl-4'>
+                <img src={Facebook} alt="facebook" className='w-6 h-6' />Ingrese con Facebook
+              </button>
+              <button onClick={handleGithubLogin} className='font-bold flex justify-center gap-4 items-center w-full border rounded-lg bg-white hover:bg-gray-300 h-10'>
+                <img src={GitHub} alt="apple" className='w-6 h-6' /> Ingrese con GitHub
+              </button>
             </form>
         
     );

@@ -42,15 +42,17 @@ export const ListProduct = ({ products }) => {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto sm:p-4">
-            <FilterList 
-                searchName={searchName} setSearchName={setSearchName}
-                searchTradeMark={searchTradeMark} setSearchTradeMark={setSearchTradeMark}
-                maxPrice={maxPrice} setMaxPrice={setMaxPrice}
-                category={category} setCategory={setCategory}
-            />
-            <div className="flex">
-                {editingProduct && (
+        <div className="w-full max-w-6xl mx-auto p-2 sm:p-4 lg:p-6">
+        <FilterList 
+            searchName={searchName} setSearchName={setSearchName}
+            searchTradeMark={searchTradeMark} setSearchTradeMark={setSearchTradeMark}
+            maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+            category={category} setCategory={setCategory}
+        />
+        
+        <div className="flex flex-col lg:flex-row">
+            {editingProduct && (
+                <div className="w-full lg:w-1/3 mb-4 lg:mb-0">
                     <EditProductForm 
                         product={editingProduct} 
                         onClose={() => setEditingProduct(null)} 
@@ -59,43 +61,52 @@ export const ListProduct = ({ products }) => {
                             setEditingProduct(null);
                         }} 
                     />
-                )}
-                <table className="w-full bg-white border border-gray-300 rounded-lg shadow-md">
-                    <thead className="bg-gray-200">
+                </div>
+            )}
+            
+            <div className="w-full overflow-x-auto">
+                <table className="w-full bg-white border border-gray-300 rounded-lg shadow-md text-sm sm:text-base">
+                    <thead className="bg-gray-200 text-left">
                         <tr>
-                            <th className="py-2 px-4 border-b text-left">Producto</th>
-                            <th className="py-2 px-4 border-b text-left">Marca</th>
-                            <th className="py-2 px-4 border-b text-left">Precio</th>
-                            <th className="py-2 px-4 border-b text-left">Peso</th>
-                            <th className="py-2 px-4 border-b text-left">Categoría</th>
-                            <th className="py-2 px-4 border-b text-left">Fecha</th>
-                            <th className="py-2 px-4 border-b text-left"></th>
+                            <th className="py-2 px-4 border-b">Producto</th>
+                            <th className="py-2 px-4 border-b">Marca</th>
+                            <th className="py-2 px-4 border-b">Precio</th>
+                            <th className="py-2 px-4 border-b">Peso</th>
+                            <th className="py-2 px-4 border-b hidden sm:table-cell">Categoría</th>
+                            <th className="py-2 px-4 border-b hidden md:table-cell">Fecha</th>
+                            <th className="py-2 px-4 border-b text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredProducts.map((product) => (
-                            <tr key={product.id} className="hover:bg-gray-100">
+                            <tr key={product.id} className="hover:bg-gray-100 text-left">
                                 <td className="py-2 px-4 border-b">{product.name}</td>
                                 <td className="py-2 px-4 border-b">{product.tradeMark}</td>
                                 <td className="py-2 px-4 border-b font-bold text-green-600">
                                     ${product.price.toFixed(2)}
                                 </td>
                                 <td className="py-2 px-4 border-b">{formatQuantity(product.quantity, product.unit)}</td>
-                                <td className="py-2 px-4 border-b">{product.category}</td>
-                                <td className="py-2 px-4 border-b">{product.date}</td>
-                                <td className="py-2 px-4 border-b">
-                                    <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-4" onClick={() => setEditingProduct(product)}>
-                                        Editar
-                                    </button>
-                                    <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => handleDeleteProduct(product)} >
-                                        Eliminar
-                                    </button>
-                                </td>
+                                <td className="py-2 px-4 border-b hidden sm:table-cell">{product.category}</td>
+                                <td className="py-2 px-4 border-b hidden md:table-cell">{product.date}</td>
+                                <td className="py-2 px-4 border-b text-center h-full">
+    <div className="grid gap-2 sm:flex sm:justify-center">
+        <button className="bg-yellow-500 text-white px-3 py-1 rounded text-xs sm:text-sm" 
+            onClick={() => setEditingProduct(product)}>
+            Editar
+        </button>
+        <button className="bg-red-500 text-white px-3 py-1 rounded text-xs sm:text-sm" 
+            onClick={() => handleDeleteProduct(product)}>
+            Eliminar
+        </button>
+    </div>
+</td>
+
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
     );
 };

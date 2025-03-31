@@ -4,7 +4,7 @@ import { RegisterForm } from '../../Component/RegisterForm/RegisterForm'
 
 export const Register = () => {
   return (
-    <div className='w-[85.3rem] h-auto flex justify-center items-center bg-gray-700'>
+    <div className='w-full min-h-screen flex justify-center items-center bg-gray-700 p-4'>
         <RegisterForm />
     </div>
   )
